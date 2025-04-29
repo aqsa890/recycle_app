@@ -1,8 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:recycle_app/pages/upload_item.dart';
+import 'package:recycle_app/services/shared_preferences.dart';
 import 'package:recycle_app/services/widget_support.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  String? id;
+
+  getthesharedpref() async {
+    id = await SharedPreferenceHelper().getUserId();
+    setState(() {});
+  }
+
+  ontheload() async {
+    await getthesharedpref();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    ontheload();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,28 +86,43 @@ class Home extends StatelessWidget {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    Column(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFececf8),
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: Colors.black45,
-                              width: 2.0,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) =>
+                                    UploadItem(category: "Plastic", id: id!),
+                          ),
+                        );
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFececf8),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: Colors.black45,
+                                width: 2.0,
+                              ),
+                            ),
+                            child: Image.asset(
+                              "images/plastic.png",
+                              height: 70,
+                              width: 70,
+                              fit: BoxFit.cover,
                             ),
                           ),
-                          child: Image.asset(
-                            "images/plastic.png",
-                            height: 70,
-                            width: 70,
-                            fit: BoxFit.cover,
+                          const SizedBox(height: 5.0),
+                          Text(
+                            "Plastic",
+                            style: AppWidget.normaltextstyle(20.0),
                           ),
-                        ),
-                        const SizedBox(height: 5.0),
-                        Text("Plastic", style: AppWidget.normaltextstyle(20.0)),
-                      ],
+                        ],
+                      ),
                     ),
                     const SizedBox(width: 20.0),
                     Column(
